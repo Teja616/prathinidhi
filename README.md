@@ -1,2 +1,2 @@
 # prathinidhi
-Prototype for Seamless Legal Form Filling 
+AI powered Prototype for Seamless Legal Form Filling 
