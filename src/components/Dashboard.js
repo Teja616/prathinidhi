@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Mic, MicOff, Download, FileText, AlertCircle } from 'lucide-react';
 import jsPDF from 'jspdf';
 
@@ -130,11 +131,29 @@ const Dashboard = () => {
   const [t, setT] = useState(translations.en);
   const [user, setUser] = useState({ name: 'User', role: 'Citizen' });
   const [loading, setLoading] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [activeTab, setActiveTab] = useState('forms');
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState('');
+    const navigate = useNavigate(); // ADD this line
+  const location = useLocation(); // ADD this line
+  
+  // Get language from URL params
+  const queryParams = new URLSearchParams(location.search);
+  const urlLanguage = queryParams.get('lang') || 'en';
+
+  // 3. CHANGE the selectedLanguage initial state to use URL param
+  const [selectedLanguage, setSelectedLanguage] = useState(urlLanguage) || 'en'; // CHANGE this line
+
+  // ... rest of your existing state declarations remain the same
+
+  // 4. ADD TOKEN CHECK useEffect (add this new useEffect)
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate(`/?lang=${selectedLanguage}`); // Redirect to login if no token
+    }
+  }, [navigate, selectedLanguage]);
 
   // Audio recording refs
   const mediaRecorderRef = useRef(null);
@@ -172,12 +191,15 @@ const Dashboard = () => {
   }, [selectedLanguage]);
 
   const handleLanguageChange = (e) => {
-    setSelectedLanguage(e.target.value);
+    const newLanguage = e.target.value;
+    setSelectedLanguage(newLanguage);
+    // Update URL to maintain language across page refreshes
+    navigate(`/dashboard?lang=${newLanguage}`, { replace: true });
   };
 
   const handleLogout = () => {
-    // Simulate logout
-    console.log('Logged out');
+    localStorage.removeItem("token"); // Remove token from localStorage
+    navigate(`/?lang=${selectedLanguage}`); // Navigate to login page with language param
   };
 
   // Helper function to get language code
