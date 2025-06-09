@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Mic, MicOff, Download, FileText, AlertCircle } from 'lucide-react';
+import { Mic, MicOff, Download, FileText, AlertCircle, Volume2 } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 const translations = {
@@ -19,6 +19,8 @@ const translations = {
     processing: 'Processing voice...',
     speakNext: 'Please speak the',
     recordingAudio: 'Recording audio...',
+    playingInstruction: 'Playing instruction...',
+    listeningFor: 'Listening for',
     // Field names for speech prompts
     courtName: 'Court Name',
     accusedName: 'Accused Name',
@@ -29,102 +31,18 @@ const translations = {
     accusedFatherName: 'Accused Father Name',
     arrestDate: 'Arrest Date'
   },
-  te: {
-  welcome: 'స్వాగతం',
-  logout: 'లాగ్ అవుట్',
-  language: 'భాష',
-  overview: 'అవలోకనం',
-  forms: 'ఫారమ్స్',
-  complaints: 'మీ ఫిర్యాదులు',
-  bailApplication: 'జామీన్ దరఖాస్తు',
-  startRecording: 'రికార్డింగ్ ప్రారంభించండి',
-  stopRecording: 'రికార్డింగ్ ఆపండి',
-  downloadPDF: 'PDF గా డౌన్లోడ్ చేయండి',
-  fillAllFields: 'దయచేసి వాయిస్ ఇన్పుట్ ద్వారా అవసరమైన అన్ని ఫీల్డ్స్ నింపండి',
-  processing: 'వాయిస్ ప్రాసెసింగ్ జరుగుతోంది...',
-  speakNext: 'దయచేసి తరువాత చెప్పండి',
-  recordingAudio: 'ఆడియో రికార్డవుతోంది...',
-  courtName: 'కోర్టు పేరు',
-  accusedName: 'ఆరోపణ పొందిన వ్యక్తి పేరు',
-  policeStation: 'పోలీస్ స్టేషన్',
-  firNumber: 'FIR నంబర్',
-  section: 'విభాగం',
-  custodyDate: 'కస్టడీ తేది',
-  accusedFatherName: 'ఆరోపితుడి తండ్రి పేరు',
-  arrestDate: 'అరెస్ట్ అయిన తేది'
-},
-hi: {
-  welcome: 'स्वागत है',
-  logout: 'लॉगआउट',
-  language: 'भाषा',
-  overview: 'सारांश',
-  forms: 'फॉर्म्स',
-  complaints: 'आपकी शिकायतें',
-  bailApplication: 'जमानत आवेदन',
-  startRecording: 'रिकॉर्डिंग शुरू करें',
-  stopRecording: 'रिकॉर्डिंग बंद करें',
-  downloadPDF: 'PDF के रूप में डाउनलोड करें',
-  fillAllFields: 'कृपया वॉइस इनपुट द्वारा सभी आवश्यक फ़ील्ड भरें',
-  processing: 'वॉइस प्रोसेसिंग हो रही है...',
-  speakNext: 'कृपया अगला बोलें',
-  recordingAudio: 'ऑडियो रिकॉर्ड हो रहा है...',
-  courtName: 'कोर्ट का नाम',
-  accusedName: 'आरोपी का नाम',
-  policeStation: 'पुलिस स्टेशन',
-  firNumber: 'FIR नंबर',
-  section: 'धारा',
-  custodyDate: 'हिरासत की तिथि',
-  accusedFatherName: 'आरोपी के पिता का नाम',
-  arrestDate: 'गिरफ्तारी की तिथि'
-},
-ta: {
-  welcome: 'வரவேற்பு',
-  logout: 'வெளியேறு',
-  language: 'மொழி',
-  overview: 'மேலோட்டம்',
-  forms: 'படிவங்கள்',
-  complaints: 'உங்கள் புகார்கள்',
-  bailApplication: 'ஜாமீன் விண்ணப்பம்',
-  startRecording: 'பதிவை தொடங்கவும்',
-  stopRecording: 'பதிவை நிறுத்தவும்',
-  downloadPDF: 'PDF ஆக பதிவிறக்கவும்',
-  fillAllFields: 'தயவுசெய்து குரல் உள்ளீட்டின் மூலம் அனைத்து கட்டங்களையும் பூர்த்தி செய்யவும்',
-  processing: 'குரல் செயலாக்கம் நடக்கிறது...',
-  speakNext: 'தயவுசெய்து அடுத்ததாக பேசவும்',
-  recordingAudio: 'ஒலி பதிவு செய்யப்படுகிறது...',
-  courtName: 'நீதிமன்றத்தின் பெயர்',
-  accusedName: 'இழுக்கப்பட்டவரின் பெயர்',
-  policeStation: 'போலீஸ் நிலையம்',
-  firNumber: 'FIR எண்',
-  section: 'பிரிவு',
-  custodyDate: 'காவலில் எடுத்த தேதி',
-  accusedFatherName: 'இழுக்கப்பட்டவரின் தந்தையின் பெயர்',
-  arrestDate: 'அறிக்கைப்படுத்திய தேதி'
-},
-bn: {
-  welcome: 'স্বাগতম',
-  logout: 'লগআউট',
-  language: 'ভাষা',
-  overview: 'সারসংক্ষেপ',
-  forms: 'ফর্মসমূহ',
-  complaints: 'আপনার অভিযোগসমূহ',
-  bailApplication: 'জামিন আবেদন',
-  startRecording: 'রেকর্ডিং শুরু করুন',
-  stopRecording: 'রেকর্ডিং বন্ধ করুন',
-  downloadPDF: 'PDF হিসাবে ডাউনলোড করুন',
-  fillAllFields: 'অনুগ্রহ করে ভয়েস ইনপুট ব্যবহার করে সব প্রয়োজনীয় ঘর পূরণ করুন',
-  processing: 'ভয়েস প্রক্রিয়াকরণ চলছে...',
-  speakNext: 'অনুগ্রহ করে পরবর্তীটি বলুন',
-  recordingAudio: 'অডিও রেকর্ড করা হচ্ছে...',
-  courtName: 'আদালতের নাম',
-  accusedName: 'অভিযুক্তের নাম',
-  policeStation: 'পুলিশ স্টেশন',
-  firNumber: 'FIR নম্বর',
-  section: 'ধারা',
-  custodyDate: 'হেফাজতের তারিখ',
-  accusedFatherName: 'অভিযুক্তের পিতার নাম',
-  arrestDate: 'গ্রেপ্তারের তারিখ'
-}
+};
+
+// Audio instruction texts for each field
+const audioInstructions = {
+  courtName: "Please speak court name",
+  accusedName: "Please speak accused name",
+  policeStation: "Please speak police station",
+  firNumber: "Please speak FIR number",
+  section: "Please speak the section ",
+  custodyDate: "Please speak custody date",
+  accusedFatherName: "Please speak father name",
+  arrestDate: "Please speak arrest name"
 };
 
 const Dashboard = () => {
@@ -134,30 +52,30 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('forms');
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isPlayingInstruction, setIsPlayingInstruction] = useState(false);
   const [error, setError] = useState('');
-    const navigate = useNavigate(); // ADD this line
-  const location = useLocation(); // ADD this line
+  const [hasPlayedInstruction, setHasPlayedInstruction] = useState({});
+  
+  const navigate = useNavigate();
+  const location = useLocation();
   
   // Get language from URL params
   const queryParams = new URLSearchParams(location.search);
   const urlLanguage = queryParams.get('lang') || 'en';
+  const [selectedLanguage, setSelectedLanguage] = useState(urlLanguage || 'en');
 
-  // 3. CHANGE the selectedLanguage initial state to use URL param
-  const [selectedLanguage, setSelectedLanguage] = useState(urlLanguage) || 'en'; // CHANGE this line
-
-  // ... rest of your existing state declarations remain the same
-
-  // 4. ADD TOKEN CHECK useEffect (add this new useEffect)
+  // Token check useEffect
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate(`/?lang=${selectedLanguage}`); // Redirect to login if no token
+      navigate(`/?lang=${selectedLanguage}`);
     }
   }, [navigate, selectedLanguage]);
 
   // Audio recording refs
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
+  const speechSynthRef = useRef(null);
 
   // Essential bail application fields in order
   const fieldOrder = [
@@ -190,16 +108,89 @@ const Dashboard = () => {
     setT(selected);
   }, [selectedLanguage]);
 
+  // Auto-start process when component mounts or field changes
+  useEffect(() => {
+    if (currentFieldIndex < fieldOrder.length && !isFormComplete()) {
+      const currentField = fieldOrder[currentFieldIndex];
+      if (!hasPlayedInstruction[currentField]) {
+        // Small delay to ensure UI is ready
+        setTimeout(() => {
+          playInstructionAndRecord(currentField);
+        }, 1000);
+      }
+    }
+  }, [currentFieldIndex]);
+
   const handleLanguageChange = (e) => {
     const newLanguage = e.target.value;
     setSelectedLanguage(newLanguage);
-    // Update URL to maintain language across page refreshes
     navigate(`/dashboard?lang=${newLanguage}`, { replace: true });
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token from localStorage
-    navigate(`/?lang=${selectedLanguage}`); // Navigate to login page with language param
+    localStorage.removeItem("token");
+    navigate(`/?lang=${selectedLanguage}`);
+  };
+
+  // Text-to-Speech function
+  const playAudioInstruction = (text, fieldName) => {
+    return new Promise((resolve, reject) => {
+      if ('speechSynthesis' in window) {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        utterance.volume = 0.8;
+        
+        utterance.onstart = () => {
+          setIsPlayingInstruction(true);
+        };
+        
+        utterance.onend = () => {
+          setIsPlayingInstruction(false);
+          setHasPlayedInstruction(prev => ({ ...prev, [fieldName]: true }));
+          resolve();
+        };
+        
+        utterance.onerror = (event) => {
+          setIsPlayingInstruction(false);
+          console.error('Speech synthesis error:', event);
+          reject(event);
+        };
+        
+        speechSynthRef.current = utterance;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        console.warn('Speech synthesis not supported');
+        setHasPlayedInstruction(prev => ({ ...prev, [fieldName]: true }));
+        resolve();
+      }
+    });
+  };
+
+  // Combined function to play instruction and start recording
+  const playInstructionAndRecord = async (fieldName) => {
+    try {
+      setError('');
+      const instructionText = audioInstructions[fieldName];
+      
+      if (instructionText) {
+        await playAudioInstruction(instructionText, fieldName);
+        // Wait a moment after instruction ends
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      // Auto-start recording after instruction
+      await startRecording();
+    } catch (error) {
+      console.error('Error playing instruction:', error);
+      setError('Error playing audio instruction. Starting recording...');
+      // Still try to start recording even if audio fails
+      await startRecording();
+    }
   };
 
   // Helper function to get language code
@@ -215,28 +206,20 @@ const Dashboard = () => {
     return languageCodes[language] || 'en';
   };
   
-  // Helper function to get service ID based on language code
+  // Helper function to get service ID based on language code (English only for now)
   const getServiceId = (languageCode) => {
-    const serviceIdMap = {
-      'te': 'bhashini/iitm/asr-dravidian--gpu--t4',
-      'hi': 'ai4bharat/conformer-hi-gpu--t4',
-      'ta': 'bhashini/iitm/asr-dravidian--gpu--t4',
-      'en': 'ai4bharat/whisper-medium-en--gpu--t4',
-      'bn': 'bhashini/iitm/asr-indoaryan--gpu--t4'
-    };
-    
-    return serviceIdMap[languageCode] || serviceIdMap['en'];
+    // Only English transcription as requested
+    return 'ai4bharat/whisper-medium-en--gpu--t4';
   };
 
   const sendAudioToServer = (base64Audio) => {
     setIsProcessing(true);
     setError('');
     
-    // Get language code based on selectedLanguage
-    const languageCode = getLanguageCode(selectedLanguage);
+    // Force English for transcription as requested
+    const languageCode = 'en';
     const serviceId = getServiceId(languageCode);
     
-    // Log request details for debugging
     console.log("Sending audio request with:", {
       languageCode,
       serviceId,
@@ -269,9 +252,8 @@ const Dashboard = () => {
       }
     };
     
-    // Add a timeout to make sure the request doesn't hang indefinitely
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
     
     fetch('https://dhruva-api.bhashini.gov.in/services/inference/pipeline', {
       method: 'POST',
@@ -297,7 +279,6 @@ const Dashboard = () => {
     })
     .then(data => {
       console.log("API Success Response:", data);
-      // Extract the text from the response
       let transcribedText = '';
     
       if (data && 
@@ -339,7 +320,6 @@ const Dashboard = () => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onloadend = () => {
-        // Remove the data URL prefix to get just the base64 string
         const base64String = reader.result.split(',')[1];
         resolve(base64String);
       };
@@ -361,10 +341,8 @@ const Dashboard = () => {
         } 
       });
       
-      // Clear previous chunks
       audioChunksRef.current = [];
       
-      // Create MediaRecorder with webm format
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: 'audio/webm;codecs=opus'
       });
@@ -378,17 +356,12 @@ const Dashboard = () => {
       };
       
       mediaRecorder.onstop = async () => {
-        // Stop all tracks to release microphone
         stream.getTracks().forEach(track => track.stop());
         
-        // Create blob from recorded chunks
         const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
         
         try {
-          // Convert to base64
           const base64Audio = await blobToBase64(audioBlob);
-          
-          // Send to Bhashini API
           sendAudioToServer(base64Audio);
         } catch (error) {
           console.error('Error converting audio to base64:', error);
@@ -400,6 +373,13 @@ const Dashboard = () => {
       mediaRecorder.start();
       setIsRecording(true);
       console.log('Recording started');
+      
+      // Auto-stop recording after 10 seconds
+      setTimeout(() => {
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
+          stopRecording();
+        }
+      }, 5000);
       
     } catch (error) {
       console.error('Error starting recording:', error);
@@ -416,6 +396,14 @@ const Dashboard = () => {
     }
   };
 
+  const manualStartRecording = async () => {
+    if (!isRecording && !isProcessing && !isPlayingInstruction) {
+      await startRecording();
+    } else if (isRecording) {
+      stopRecording();
+    }
+  };
+
   const isFormComplete = () => {
     return fieldOrder.every(field => bailForm[field].trim() !== '');
   };
@@ -427,48 +415,36 @@ const Dashboard = () => {
 
   const downloadPDF = () => {
     try {
-      // Create new jsPDF instance
       const doc = new jsPDF();
       
-      // Set font size and style for title
       doc.setFontSize(16);
       doc.setFont("helvetica", "bold");
-      
-      // Add title
       doc.text("BAIL APPLICATION", 105, 20, { align: "center" });
       
-      // Set normal font for content
       doc.setFontSize(12);
       doc.setFont("helvetica", "normal");
       
-      // Add court section
       doc.text("IN THE COURT OF " + (bailForm.courtName || "____________________"), 20, 40);
       
-      // Add case details section
       doc.text("IN THE MATTER OF", 20, 60);
       doc.text("STATE", 20, 75);
       doc.text("VS", 20, 85);
       doc.text(bailForm.accusedName || "____________________", 20, 95);
       doc.text("S/O " + (bailForm.accusedFatherName || "____________________"), 20, 105);
       
-      // Add case information
       doc.text("Police Station: " + (bailForm.policeStation || "____________________"), 20, 125);
       doc.text("FIR NO: " + (bailForm.firNumber || "____________________"), 20, 135);
       doc.text("U/S: " + (bailForm.section || "____________________"), 20, 145);
       doc.text("Accused under police custody since: " + (bailForm.custodyDate || "____________________"), 20, 155);
       
-      // Add application header
       doc.setFont("helvetica", "bold");
       doc.text("APPLICATION UNDER SECTION 439 Cr. Pc FOR GRANT OF BAIL", 20, 175);
       doc.text("ON BEHALF OF THE ACCUSED", 20, 185);
       
-      // Add respectfully submitted section
       doc.text("MOST RESPECTFULLY SUBMITTED AS UNDER :-", 20, 205);
       
-      // Set normal font for paragraphs
       doc.setFont("helvetica", "normal");
       
-      // Add paragraphs with text wrapping
       const paragraphs = [
         "1. That the police has falsely implicated the applicant in the present case and have arrested him without any reason on " + (bailForm.arrestDate || "____________________") + ", the applicant is in police custody since then.",
         "2. That the applicant is innocent and has been falsely implicated in the present case.",
@@ -484,29 +460,24 @@ const Dashboard = () => {
         doc.text(lines, 20, yPosition);
         yPosition += lines.length * 7 + 5;
         
-        // Add new page if content exceeds page height
         if (yPosition > 270) {
           doc.addPage();
           yPosition = 20;
         }
       });
       
-      // Add prayer section
       const prayerText = "Therefore, it is most respectfully prayed that this Hon'ble Court may be pleased to grant bail to the applicant.";
       const prayerLines = doc.splitTextToSize(prayerText, 170);
       doc.text(prayerLines, 20, yPosition);
       yPosition += prayerLines.length * 7 + 20;
       
-      // Add signature section
       doc.text("Yours faithfully,", 20, yPosition);
       doc.text("[Advocate Name]", 20, yPosition + 10);
       doc.text("Advocate for the Applicant", 20, yPosition + 20);
       
-      // Add date
       const currentDate = new Date().toLocaleDateString();
       doc.text("Date: " + currentDate, 20, yPosition + 40);
       
-      // Save the PDF
       const fileName = `bail_application_${bailForm.accusedName.replace(/\s+/g, '_') || 'application'}.pdf`;
       doc.save(fileName);
       
@@ -528,7 +499,13 @@ const Dashboard = () => {
       arrestDate: ''
     });
     setCurrentFieldIndex(0);
+    setHasPlayedInstruction({});
     setError('');
+    // Cancel any ongoing speech
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    setIsPlayingInstruction(false);
   };
 
   if (loading) return (
@@ -618,17 +595,30 @@ const Dashboard = () => {
           <div style={styles.voiceSection}>
             <div style={styles.micContainer}>
               <button
-                style={isRecording ? { ...styles.micButton, ...styles.micButtonRecording } : styles.micButton}
-                onClick={isRecording ? stopRecording : startRecording}
-                disabled={isProcessing || isFormComplete()}
+                style={
+                  isPlayingInstruction 
+                    ? { ...styles.micButton, ...styles.micButtonInstruction }
+                    : isRecording 
+                      ? { ...styles.micButton, ...styles.micButtonRecording } 
+                      : styles.micButton
+                }
+                onClick={manualStartRecording}
+                disabled={isProcessing || isFormComplete() || isPlayingInstruction}
               >
-                {isRecording ? <MicOff size={32} /> : <Mic size={32} />}
+                {isPlayingInstruction ? (
+                  <Volume2 size={32} />
+                ) : isRecording ? (
+                  <MicOff size={32} />
+                ) : (
+                  <Mic size={32} />
+                )}
               </button>
               <p style={styles.micStatus}>
-                {isProcessing ? t.processing : 
-                 isRecording ? t.recordingAudio : 
+                {isPlayingInstruction ? t.playingInstruction :
+                 isProcessing ? t.processing : 
+                 isRecording ? `${t.listeningFor} ${getCurrentFieldName()}` : 
                  isFormComplete() ? 'All fields completed!' :
-                 `${t.speakNext} ${getCurrentFieldName()}`}
+                 `Next: ${getCurrentFieldName()}`}
               </p>
               
               {/* Error display */}
@@ -838,9 +828,9 @@ const styles = {
   },
   subtitle: {
     fontSize: 12,
-    margin: '2px 0 0 0',
+    margin: '4px 0 0 0',
     color: '#e2e8f0',
-    fontWeight: 500,
+    fontWeight: 400,
   },
   rightNav: {
     display: 'flex',
@@ -848,26 +838,28 @@ const styles = {
     gap: 16,
   },
   languageSelect: {
-    padding: '8px 12px',
-    borderRadius: 6,
-    border: 'none',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: '#1e40af',
     color: '#fff',
-    fontWeight: 500,
+    border: '1px solid #3b82f6',
+    borderRadius: 6,
+    padding: '8px 12px',
     fontSize: 14,
+    fontWeight: 500,
     cursor: 'pointer',
     outline: 'none',
+    transition: 'all 0.2s ease',
   },
   logoutBtn: {
-    background: 'linear-gradient(45deg, #ffb300, #f29900)',
-    color: '#111',
+    backgroundColor: '#dc2626',
+    color: '#fff',
     border: 'none',
+    borderRadius: 6,
     padding: '8px 16px',
-    borderRadius: 24,
-    fontWeight: 600,
     fontSize: 14,
+    fontWeight: 600,
     cursor: 'pointer',
-    boxShadow: '0 4px 8px rgba(255, 179, 0, 0.4)',
+    transition: 'all 0.2s ease',
+    outline: 'none',
   },
   mainContainer: {
     display: 'flex',
@@ -875,28 +867,23 @@ const styles = {
     maxWidth: 1300,
     margin: '0 auto',
     width: '100%',
-    padding: 20,
-    gap: 24,
   },
   sidebar: {
-    width: 250,
+    width: 280,
     backgroundColor: '#fff',
-    borderRadius: 12,
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
-    padding: 20,
-    display: 'flex',
-    flexDirection: 'column',
-    height: 'fit-content',
+    borderRight: '1px solid #e2e8f0',
+    padding: '24px 0',
+    height: 'calc(100vh - 80px)',
     position: 'sticky',
-    top: 100,
+    top: 80,
+    overflowY: 'auto',
   },
   userProfile: {
     display: 'flex',
     alignItems: 'center',
+    padding: '0 24px',
+    marginBottom: 32,
     gap: 12,
-    padding: '12px 0',
-    borderBottom: '1px solid #f1f5f9',
-    marginBottom: 20,
   },
   userAvatar: {
     width: 48,
@@ -907,42 +894,45 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 600,
   },
   userInfo: {
-    overflow: 'hidden',
+    flex: 1,
   },
   userName: {
-    margin: 0,
     fontSize: 16,
     fontWeight: 600,
+    margin: 0,
     color: '#1e293b',
   },
   userRole: {
-    margin: '2px 0 0 0',
-    fontSize: 12,
+    fontSize: 14,
     color: '#64748b',
+    margin: '2px 0 0 0',
   },
   sidebarNav: {
     display: 'flex',
     flexDirection: 'column',
     gap: 4,
+    padding: '0 16px',
   },
   navItem: {
     display: 'flex',
     alignItems: 'center',
     gap: 12,
     padding: '12px 16px',
-    borderRadius: 8,
-    backgroundColor: 'transparent',
-    color: '#334155',
     fontSize: 14,
     fontWeight: 500,
+    color: '#64748b',
+    backgroundColor: 'transparent',
     border: 'none',
+    borderRadius: 8,
     cursor: 'pointer',
     transition: 'all 0.2s ease',
     textAlign: 'left',
+    width: '100%',
+    outline: 'none',
   },
   activeNavItem: {
     backgroundColor: '#eff6ff',
@@ -951,23 +941,28 @@ const styles = {
   },
   navIcon: {
     fontSize: 18,
+    width: 24,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   contentContainer: {
     flex: 1,
+    padding: '24px',
+    backgroundColor: '#f8fafc',
+    overflowY: 'auto',
     display: 'flex',
     gap: 24,
   },
   voiceSection: {
-    display: 'flex',
-    flexDirection: 'column',
     width: 320,
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 24,
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
     height: 'fit-content',
     position: 'sticky',
-    top: 100,
+    top: 24,
   },
   micContainer: {
     display: 'flex',
@@ -979,28 +974,32 @@ const styles = {
     width: 80,
     height: 80,
     borderRadius: '50%',
-    border: 'none',
     backgroundColor: '#0b5394',
     color: '#fff',
+    border: 'none',
+    cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    cursor: 'pointer',
     transition: 'all 0.3s ease',
-    boxShadow: '0 6px 20px rgba(11, 83, 148, 0.3)',
+    boxShadow: '0 4px 12px rgba(11, 83, 148, 0.3)',
+    outline: 'none',
   },
   micButtonRecording: {
     backgroundColor: '#dc2626',
-    boxShadow: '0 6px 20px rgba(220, 38, 38, 0.4)',
+    boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)',
     animation: 'pulse 1.5s infinite',
+  },
+  micButtonInstruction: {
+    backgroundColor: '#059669',
+    boxShadow: '0 4px 12px rgba(5, 150, 105, 0.3)',
   },
   micStatus: {
     fontSize: 14,
-    fontWeight: 500,
-    color: '#475569',
+    color: '#64748b',
     textAlign: 'center',
     margin: 0,
-    lineHeight: 1.4,
+    fontWeight: 500,
   },
   errorContainer: {
     display: 'flex',
@@ -1013,10 +1012,10 @@ const styles = {
     width: '100%',
   },
   errorText: {
-    fontSize: 13,
+    fontSize: 12,
     color: '#dc2626',
     margin: 0,
-    fontWeight: 500,
+    lineHeight: 1.4,
   },
   progressContainer: {
     width: '100%',
@@ -1034,7 +1033,6 @@ const styles = {
   progressFill: {
     height: '100%',
     backgroundColor: '#0b5394',
-    borderRadius: 4,
     transition: 'width 0.3s ease',
   },
   progressText: {
@@ -1042,24 +1040,24 @@ const styles = {
     color: '#64748b',
     textAlign: 'center',
     margin: 0,
-    fontWeight: 500,
   },
   resetButton: {
-    padding: '8px 16px',
-    backgroundColor: '#f1f5f9',
-    color: '#475569',
-    border: '1px solid #e2e8f0',
+    backgroundColor: '#f59e0b',
+    color: '#fff',
+    border: 'none',
     borderRadius: 6,
+    padding: '8px 16px',
     fontSize: 14,
     fontWeight: 500,
     cursor: 'pointer',
     transition: 'all 0.2s ease',
+    outline: 'none',
   },
   bailFormContainer: {
     flex: 1,
     backgroundColor: '#fff',
     borderRadius: 12,
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
     overflow: 'hidden',
   },
   bailFormHeader: {
@@ -1067,8 +1065,8 @@ const styles = {
     alignItems: 'center',
     gap: 12,
     padding: '20px 24px',
-    borderBottom: '1px solid #e2e8f0',
     backgroundColor: '#f8fafc',
+    borderBottom: '1px solid #e2e8f0',
   },
   bailFormTitle: {
     fontSize: 18,
@@ -1077,17 +1075,15 @@ const styles = {
     margin: 0,
   },
   bailApplicationDocument: {
-    padding: 24,
+    padding: '24px',
   },
   documentContent: {
-    backgroundColor: '#fefefe',
+    backgroundColor: '#fff',
     border: '1px solid #e2e8f0',
     borderRadius: 8,
-    padding: 32,
+    padding: '32px',
     marginBottom: 24,
-    fontFamily: "'Times New Roman', serif",
-    lineHeight: 1.6,
-    minHeight: 600,
+    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
   },
   documentTitle: {
     fontSize: 20,
@@ -1098,73 +1094,79 @@ const styles = {
     textDecoration: 'underline',
   },
   courtSection: {
-    marginBottom: 20,
+    marginBottom: 24,
   },
   documentSection: {
-    marginBottom: 20,
+    marginBottom: 24,
+    lineHeight: 1.6,
   },
   documentText: {
     fontSize: 14,
-    color: '#1e293b',
-    margin: '8px 0',
-    textAlign: 'justify',
+    color: '#374151',
+    margin: '0 0 8px 0',
+    lineHeight: 1.6,
   },
   fillableField: {
-    backgroundColor: '#fef3c7',
-    padding: '2px 4px',
-    borderRadius: 3,
+    backgroundColor: '#f3f4f6',
+    padding: '2px 6px',
+    borderRadius: 4,
+    color: '#1e293b',
     fontWeight: 600,
-    color: '#92400e',
-    border: '1px solid #fbbf24',
+    border: '1px solid #d1d5db',
   },
   downloadSection: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     gap: 12,
+    padding: '20px',
+    backgroundColor: '#f8fafc',
+    borderRadius: 8,
+    border: '1px solid #e2e8f0',
   },
   downloadButton: {
     display: 'flex',
     alignItems: 'center',
     gap: 8,
-    padding: '12px 24px',
     backgroundColor: '#059669',
     color: '#fff',
     border: 'none',
     borderRadius: 8,
-    fontSize: 16,
+    padding: '12px 24px',
+    fontSize: 14,
     fontWeight: 600,
     cursor: 'pointer',
     transition: 'all 0.2s ease',
-    boxShadow: '0 4px 12px rgba(5, 150, 105, 0.3)',
+    outline: 'none',
   },
   downloadButtonDisabled: {
     display: 'flex',
     alignItems: 'center',
     gap: 8,
-    padding: '12px 24px',
     backgroundColor: '#9ca3af',
     color: '#fff',
     border: 'none',
     borderRadius: 8,
-    fontSize: 16,
+    padding: '12px 24px',
+    fontSize: 14,
     fontWeight: 600,
     cursor: 'not-allowed',
+    transition: 'all 0.2s ease',
+    outline: 'none',
     opacity: 0.6,
   },
   warningText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#dc2626',
-    textAlign: 'center',
     margin: 0,
-    fontWeight: 500,
+    textAlign: 'center',
   },
   loadingContainer: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100vh',
+    height: '100vh',
     backgroundColor: '#f8fafc',
     gap: 16,
   },
@@ -1177,4 +1179,5 @@ const styles = {
     animation: 'spin 1s linear infinite',
   },
 };
+
 export default Dashboard;
