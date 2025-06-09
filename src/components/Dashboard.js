@@ -31,19 +31,179 @@ const translations = {
     accusedFatherName: 'Accused Father Name',
     arrestDate: 'Arrest Date'
   },
+  te: {
+  welcome: 'స్వాగతం',
+  logout: 'లాగ్ అవుట్',
+  language: 'భాష',
+  overview: 'అవలోకనం',
+  forms: 'ఫారాలు',
+  complaints: 'మీ ఫిర్యాదులు',
+  bailApplication: 'జామీన్ దరఖాస్తు',
+  startRecording: 'రికార్డింగ్ ప్రారంభించండి',
+  stopRecording: 'రికార్డింగ్ ఆపండి',
+  downloadPDF: 'PDF రూపంలో డౌన్‌లోడ్ చేయండి',
+  fillAllFields: 'దయచేసి అవసరమైన అన్ని ఫీల్డ్స్‌ను వాయిస్ ఇన్‌పుట్ ద్వారా నింపండి',
+  processing: 'వాయిస్ ప్రాసెసింగ్ జరుగుతోంది...',
+  speakNext: 'దయచేసి చెప్పండి',
+  recordingAudio: 'ఆడియో రికార్డవుతోంది...',
+  playingInstruction: 'సూచనల్ని ప్లే చేస్తున్నాము...',
+  listeningFor: 'కోసం వింటోంది',
+  // Field names for speech prompts
+  courtName: 'కోర్టు పేరు',
+  accusedName: 'ఆరోపితుని పేరు',
+  policeStation: 'పోలీస్టేషన్ పేరు',
+  firNumber: 'FIR నంబర్',
+  section: 'శాఖ',
+  custodyDate: 'కస్టడీ తేదీ',
+  accusedFatherName: 'ఆరోపితుని తండ్రి పేరు',
+  arrestDate: 'అరెస్ట్ అయిన తేదీ'
+},
+hi: {
+  welcome: 'स्वागत है',
+  logout: 'लॉगआउट',
+  language: 'भाषा',
+  overview: 'सारांश',
+  forms: 'फॉर्म्स',
+  complaints: 'आपकी शिकायतें',
+  bailApplication: 'जमानत आवेदन',
+  startRecording: 'रिकॉर्डिंग शुरू करें',
+  stopRecording: 'रिकॉर्डिंग बंद करें',
+  downloadPDF: 'PDF डाउनलोड करें',
+  fillAllFields: 'कृपया सभी आवश्यक फ़ील्ड्स को वॉयस इनपुट से भरें',
+  processing: 'वॉयस प्रोसेसिंग हो रही है...',
+  speakNext: 'कृपया बोलें',
+  recordingAudio: 'ऑडियो रिकॉर्ड हो रहा है...',
+  playingInstruction: 'निर्देश चलाए जा रहे हैं...',
+  listeningFor: 'सुन रहा है',
+  // Field names for speech prompts
+  courtName: 'कोर्ट का नाम',
+  accusedName: 'आरोपी का नाम',
+  policeStation: 'थाने का नाम',
+  firNumber: 'FIR नंबर',
+  section: 'धारा',
+  custodyDate: 'हिरासत की तारीख',
+  accusedFatherName: 'आरोपी के पिता का नाम',
+  arrestDate: 'गिरफ्तारी की तारीख'
+},
+ta: {
+  welcome: 'வரவேற்கிறோம்',
+  logout: 'வெளியேறு',
+  language: 'மொழி',
+  overview: 'மேலோட்டம்',
+  forms: 'படிவங்கள்',
+  complaints: 'உங்கள் புகார்கள்',
+  bailApplication: 'ஜாமீன் விண்ணப்பம்',
+  startRecording: 'பதிவை தொடங்கு',
+  stopRecording: 'பதிவை நிறுத்து',
+  downloadPDF: 'PDF ஐ பதிவிறக்கவும்',
+  fillAllFields: 'தயவுசெய்து அனைத்து தேவையான புலங்களையும் குரல் உள்ளீட்டின் மூலம் பூர்த்தி செய்யவும்',
+  processing: 'குரல் செயலாக்கம் நடைபெறுகிறது...',
+  speakNext: 'தயவுசெய்து பேசவும்',
+  recordingAudio: 'ஒலி பதிவு செய்யப்படுகிறது...',
+  playingInstruction: 'வழிமுறைகள் இயக்கப்படுகின்றன...',
+  listeningFor: 'கேட்கப்படுகிறது',
+  // Field names for speech prompts
+  courtName: 'நீதிமன்ற பெயர்',
+  accusedName: 'ஆரோபிக்கப்பட்டவர் பெயர்',
+  policeStation: 'போலீஸ் நிலையம்',
+  firNumber: 'FIR எண்',
+  section: 'பிரிவு',
+  custodyDate: 'காவலில் எடுக்கப்பட்ட தேதி',
+  accusedFatherName: 'ஆரோபிக்கப்படுபவரின் தந்தை பெயர்',
+  arrestDate: 'அரஸ்ட் தேதி'
+},
+bn: {
+  welcome: 'স্বাগত',
+  logout: 'লগআউট',
+  language: 'ভাষা',
+  overview: 'সংক্ষিপ্ত বিবরণ',
+  forms: 'ফর্মসমূহ',
+  complaints: 'আপনার অভিযোগ',
+  bailApplication: 'জামিন আবেদন',
+  startRecording: 'রেকর্ডিং শুরু করুন',
+  stopRecording: 'রেকর্ডিং বন্ধ করুন',
+  downloadPDF: 'PDF হিসাবে ডাউনলোড করুন',
+  fillAllFields: 'অনুগ্রহ করে সমস্ত প্রয়োজনীয় ঘরগুলো ভয়েস ইনপুট দিয়ে পূরণ করুন',
+  processing: 'ভয়েস প্রক্রিয়াকরণ চলছে...',
+  speakNext: 'অনুগ্রহ করে বলুন',
+  recordingAudio: 'অডিও রেকর্ড করা হচ্ছে...',
+  playingInstruction: 'নির্দেশাবলী চালানো হচ্ছে...',
+  listeningFor: 'শোনা হচ্ছে',
+  // Field names for speech prompts
+  courtName: 'আদালতের নাম',
+  accusedName: 'আসামির নাম',
+  policeStation: 'থানার নাম',
+  firNumber: 'FIR নম্বর',
+  section: 'ধারা',
+  custodyDate: 'হেফাজতে নেওয়ার তারিখ',
+  accusedFatherName: 'আসামির পিতার নাম',
+  arrestDate: 'গ্রেপ্তারের তারিখ'
+}
+
+
+
 };
 
 // Audio instruction texts for each field
 const audioInstructions = {
-  courtName: "Please speak court name",
-  accusedName: "Please speak accused name",
-  policeStation: "Please speak police station",
-  firNumber: "Please speak FIR number",
-  section: "Please speak the section ",
-  custodyDate: "Please speak custody date",
-  accusedFatherName: "Please speak father name",
-  arrestDate: "Please speak arrest name"
+  courtName: {
+    en: "Please speak court name",
+    hi: "कृपया अदालत का नाम बोलें",
+    te: "దయచేసి కోర్టు పేరు చెప్పండి",
+    ta: "தயவுசெய்து நீதிமன்றத்தின் பெயரை கூறுங்கள்",
+    bn: "অনুগ্রহ করে আদালতের নাম বলুন"
+  },
+  accusedName: {
+    en: "Please speak accused name",
+    hi: "कृपया आरोपी का नाम बोलें",
+    te: "దయచేసి నిందితుని పేరు చెప్పండి",
+    ta: "தயவுசெய்து குற்றம்சாட்டப்பட்டவரின் பெயரை கூறுங்கள்",
+    bn: "অনুগ্রহ করে অভিযুক্তের নাম বলুন"
+  },
+  policeStation: {
+    en: "Please speak police station",
+    hi: "कृपया पुलिस स्टेशन का नाम बोलें",
+    te: "దయచేసి పోలీస్ స్టేషన్ పేరు చెప్పండి",
+    ta: "தயவுசெய்து காவல் நிலையத்தின் பெயரை கூறுங்கள்",
+    bn: "অনুগ্রহ করে থানার নাম বলুন"
+  },
+  firNumber: {
+    en: "Please speak FIR number",
+    hi: "कृपया एफआईआर नंबर बोलें",
+    te: "దయచేసి ఎఫ్ఐఆర్ సంఖ్యను చెప్పండి",
+    ta: "தயவுசெய்து எஃப்ஐஆர் எண்ணை கூறுங்கள்",
+    bn: "অনুগ্রহ করে এফআইআর নম্বর বলুন"
+  },
+  section: {
+    en: "Please speak the section",
+    hi: "कृपया धारा बताएं",
+    te: "దయచేసి సెక్షన్ చెప్పండి",
+    ta: "தயவுசெய்து பிரிவை கூறுங்கள்",
+    bn: "অনুগ্রহ করে ধারা বলুন"
+  },
+  custodyDate: {
+    en: "Please speak custody date",
+    hi: "कृपया हिरासत की तारीख बताएं",
+    te: "దయచేసి కస్టడీ తేది చెప్పండి",
+    ta: "தயவுசெய்து காவலில் எடுத்த தேதி கூறுங்கள்",
+    bn: "অনুগ্রহ করে হেফাজতের তারিখ বলুন"
+  },
+  accusedFatherName: {
+    en: "Please speak father name",
+    hi: "कृपया पिता का नाम बोलें",
+    te: "దయచేసి తండ్రి పేరు చెప్పండి",
+    ta: "தயவுசெய்து தந்தையின் பெயரை கூறுங்கள்",
+    bn: "অনুগ্রহ করে পিতার নাম বলুন"
+  },
+  arrestDate: {
+    en: "Please speak arrest date",
+    hi: "कृपया गिरफ्तारी की तारीख बताएं",
+    te: "దయచేసి అరెస్టు తేదీ చెప్పండి",
+    ta: "தயவுசெய்து கைது செய்யப்பட்ட தேதி கூறுங்கள்",
+    bn: "অনুগ্রহ করে গ্রেফতারের তারিখ বলুন"
+  }
 };
+
 
 const Dashboard = () => {
   const [t, setT] = useState(translations.en);
@@ -63,6 +223,7 @@ const Dashboard = () => {
   const queryParams = new URLSearchParams(location.search);
   const urlLanguage = queryParams.get('lang') || 'en';
   const [selectedLanguage, setSelectedLanguage] = useState(urlLanguage || 'en');
+  const [language, setLanguage] = useState("en");
 
   // Token check useEffect
   useEffect(() => {
@@ -172,26 +333,25 @@ const Dashboard = () => {
   };
 
   // Combined function to play instruction and start recording
-  const playInstructionAndRecord = async (fieldName) => {
-    try {
-      setError('');
-      const instructionText = audioInstructions[fieldName];
-      
-      if (instructionText) {
-        await playAudioInstruction(instructionText, fieldName);
-        // Wait a moment after instruction ends
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
-      
-      // Auto-start recording after instruction
-      await startRecording();
-    } catch (error) {
-      console.error('Error playing instruction:', error);
-      setError('Error playing audio instruction. Starting recording...');
-      // Still try to start recording even if audio fails
-      await startRecording();
+const playInstructionAndRecord = async (fieldName) => {
+  try {
+    setError('');
+    const instructionSet = audioInstructions[fieldName];
+    const instructionText = instructionSet ? instructionSet[language] || instructionSet['en'] : '';
+
+    if (instructionText) {
+      await playAudioInstruction(instructionText, fieldName);
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
-  };
+
+    await startRecording();
+  } catch (error) {
+    console.error('Error playing instruction:', error);
+    setError('Error playing audio instruction. Starting recording...');
+    await startRecording();
+  }
+};
+
 
   // Helper function to get language code
   const getLanguageCode = (language) => {
